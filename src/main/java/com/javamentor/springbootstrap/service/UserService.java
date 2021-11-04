@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
     List<User> getUsers();
-    boolean delUser(Long id);
+    boolean delUser(User user);
     void addOrEditUser(User user, boolean encPass);
     User getUser(Long id);
     void createDataTables();

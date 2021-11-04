@@ -31,48 +31,8 @@ public class AdminController {
         return "/crud_user";
     }
 
-/*    // Add or Edit User
-    @PostMapping("/addOrEdit_user")
-    public String addUser(@ModelAttribute ("User") User user
-            ,@RequestParam(value = "originalPass", required = false) String originalPass
-            ,@RequestParam(value = "checkBoxRoles", required = false) String[] rolesSelector) {
-        if((user.getName() != null) & (user.getPassword() != null)) {
-            Set<Role> roles = new HashSet<>();
-            for(String role : rolesSelector) {
-                roles.add(new Role(role));
-            }
-            if(!roles.isEmpty()){
-                user.setRoles(roles);
-                if( (user.getId() == null) || !(user.getPassword().equals(originalPass)) ){
-                    userService.addOrEditUser(user, true);
-                } else {
-                    userService.addOrEditUser(user, false);
-                }
-            }
-        }
-        return "redirect:/admin/crud_user";
-    }
-
-    // Get User (for upd or del user)
-    @GetMapping("/get_user/{id}")
-    public User GetUser(@PathVariable("id") Long id) {
-        return userService.getUser(id);
-    }
-
-    // Delete User
-    @PostMapping("/del_user/{id}")
-    public String DeleteUser(@PathVariable("id") Long id) {
-        userService.delUser(id);
-        return "redirect:/admin/crud_user";
-    }
-*/
     @ModelAttribute("Users")
     public List<User> ListUsers() {
         return userService.getUsers();
-    }
-
-    @ModelAttribute("User")
-    public User getNewUser() {
-        return new User();
     }
 }

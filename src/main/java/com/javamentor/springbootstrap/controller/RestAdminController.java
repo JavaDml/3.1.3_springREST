@@ -27,19 +27,17 @@ public class RestAdminController {
 
     // Add or Edit User
     @PostMapping("/addOrEdit_user")
-    public ResponseEntity<?> addUser(@RequestBody User user
-            , @RequestParam(value = "originalPass", required = false) String originalPass
-            , @RequestParam(value = "checkBoxRoles", required = false) String[] rolesSelector) {
+    public ResponseEntity<?> addUser(@RequestBody User user) {
         if((user.getName() != null) & (user.getPassword() != null)) {
-            Set<Role> roles = new HashSet<>();
-            for(String role : rolesSelector) {
-                roles.add(new Role(role));
-            }
-            if(!roles.isEmpty()){
-                user.setRoles(roles);
-                if( (user.getId() == null) || !(user.getPassword().equals(originalPass)) ){
-                    userService.addOrEditUser(user, true);
-                } else {
+            if(!user.getRoles().isEmpty()){
+                if(user.getId() != null) {
+                    User oldUser = userService.getUser(user.getId());
+                    if(!(user.getPassword().equals(oldUser.getPassword()))) {
+                        userService.addOrEditUser(user, true);
+                    } else {
+                        userService.addOrEditUser(user, false);
+                    }
+                } else  {
                     userService.addOrEditUser(user, false);
                 }
             }
@@ -59,9 +57,9 @@ public class RestAdminController {
     }
 
     // Delete User
-    @PostMapping("/del_user/{id}")
-    public ResponseEntity<?> DeleteUser(@PathVariable("id") Long id) {
-        final boolean deleted = userService.delUser(id);
+    @PostMapping("/del_user")
+    public ResponseEntity<?> DeleteUser(@RequestBody User user) {
+        boolean deleted = userService.delUser(user);
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
@@ -75,15 +73,4 @@ public class RestAdminController {
                 ? new ResponseEntity<>(users, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-
-    /*@ModelAttribute("Users")
-    public List<User> ListUsers() {
-        return userService.getUsers();
-    }
-
-    @ModelAttribute("User")
-    public User getNewUser() {
-        return new User();
-    }*/
 }

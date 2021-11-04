@@ -77,31 +77,6 @@
                         </tr>
                         </thead>
                         <tbody id="usersTable">
-
-                        <!--<tr th:each="user: ${Users}">
-                            <td th:text="${user.getId()}"></td>
-                            <td th:text="${user.getName()}"></td>
-                            <td th:text="${user.getSurname()}"></td>
-                            <td th:text="${user.getAge()}"></td>
-                            <td th:text="${user.getRolesToString()}"></td>
-
-                            <td>
-                                <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                        data-bs-target="#editModal"
-                                        th:data-bs-whatever="@{/admin/get_user/{id} (id=${user.getId()}) }">
-                                    Edit
-                                </button>
-                            </td>
-
-                            <td>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal"
-                                        th:data-bs-whatever="@{/admin/get_user/{id} (id=${user.getId()}) }">
-                                    Delete
-                                </button>
-                            </td>
-
-                        </tr>-->
                         </tbody>
                     </table>
                 </div>
@@ -120,7 +95,7 @@
                                 <div class="modal-body">
                                     <div style="text-align: center;">
                                         <div class="row justify-content-center align-items-center">
-                                            <form class="text-center" th:method="POST"
+                                            <form class="text-center"
                                                   id="deleteFormBody">
                                                 <div class="form-group font-weight-bold">
                                                     <div class="form-group m-3">
@@ -147,13 +122,21 @@
                                                                name="age" value=""/>
                                                     </div>
 
+                                                    <div class="form-group m-3">
+                                                        <label for="password1" class="col-form-label">Password</label>
+                                                        <input type="password" class="form-control" id="password1"
+                                                               name="password" value=""/>
+                                                    </div>
+
                                                     <div class="form-group m-3" readonly="readonly">
                                                         <label for="roles1">Roles</label>
-                                                        <select class="form-select w-100 "
+                                                        <select class="form-select w-100" multiple aria-label="multiple select example"
                                                                 size="2"
                                                                 id="roles1"
                                                                 name="checkBoxRoles"
                                                                 disabled="true">
+                                                            <option value="1">ROLE_USER</option>
+                                                            <option value="2">ROLE_ADMIN</option>
                                                         </select>
                                                     </div>
 
@@ -162,6 +145,7 @@
                                                                 data-bs-dismiss="modal">Close
                                                         </button>
                                                         <input type="submit" class="btn btn-danger"
+                                                               id="deleteBtnForm"
                                                                value="Delete"/>
                                                     </div>
                                                 </div>
@@ -228,12 +212,8 @@
                                                             size="2"
                                                             id="roles2"
                                                             name="checkBoxRoles">
-                                                        <option id="ROLE_USER" value="ROLE_USER" selected="false">
-                                                            ROLE_USER
-                                                        </option>
-                                                        <option id="ROLE_ADMIN" value="ROLE_ADMIN" selected="false">
-                                                            ROLE_ADMIN
-                                                        </option>
+                                                        <option value="1">ROLE_USER</option>
+                                                        <option value="2">ROLE_ADMIN</option>
                                                     </select>
                                                 </div>
 
@@ -242,6 +222,7 @@
                                                             data-bs-dismiss="modal">Close
                                                     </button>
                                                     <input type="submit" class="btn btn-primary"
+                                                           id="editBtnForm"
                                                            value="Edit"/>
                                                 </div>
                                             </div>
@@ -293,17 +274,13 @@
                                                     size="2"
                                                     id="roles"
                                                     name="checkBoxRoles">
-                                                <option selected="true">
-                                                    ROLE_USER
-                                                </option>
-                                                <option>
-                                                    ROLE_ADMIN
-                                                </option>
+                                                <option value="1">ROLE_USER</option>
+                                                <option value="2">ROLE_ADMIN</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-success">Add new user</button>
+                                <button type="submit" id="newBtnForm" class="btn btn-success">Add new user</button>
                             </form>
                         </div>
                     </div>

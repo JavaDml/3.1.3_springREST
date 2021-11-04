@@ -7,7 +7,7 @@ import java.util.List;
 public interface UserDao {
     List<User> getUsers();
     void addOrEditUser(User user);
-    boolean delUser(Long id);
+    boolean delUser(User user);
     User getUser(Long id);
     User getUserByName(String s);
     void createDataTables();

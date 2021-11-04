@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean delUser(Long id) {
-        return userDao.delUser(id);
+    public boolean delUser(User user) {
+        return userDao.delUser(user);
     }
 
     @Override
