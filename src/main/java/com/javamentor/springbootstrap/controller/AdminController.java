@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/crud_user")
+//@RequestMapping
 public class AdminController {
 
     private final UserService userService;
@@ -24,11 +24,23 @@ public class AdminController {
     }
 
     // form 'admin_panel'
-    @GetMapping
+    @GetMapping("/crud_user")
     public String GetUsers(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("CurrentUser", auth.getPrincipal());
         return "/crud_user";
+    }
+
+    // login
+    @GetMapping("/login")
+    public String GetLogin() {
+        return "/login";
+    }
+
+    @GetMapping("/login/google")
+    public  String GetGoogle() {
+
+        return null;
     }
 
     @ModelAttribute("Users")

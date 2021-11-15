@@ -1,6 +1,10 @@
 package com.javamentor.springbootstrap.security;
 
 
+import com.github.scribejava.apis.GoogleApi20;
+import com.github.scribejava.apis.HHApi;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.oauth.OAuth20Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -32,11 +36,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/login", "/logout").permitAll() // доступность всем
-                .antMatchers("/admin/**").access("hasAnyRole('ROLE_ADMIN')") // разрешаем входить на /user пользователям с ролью User, Admin
-                .antMatchers("/user/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+                .antMatchers("/", "/login**", "/logout").permitAll() // доступность всем
+                .antMatchers("/crud_user/**", "/rest/**").access("hasAnyRole('ROLE_ADMIN')") // разрешаем входить на /user пользователям с ролью User, Admin
+                .antMatchers("/show_my_user").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
                 .and()
                 .formLogin()  // Spring сам подставит свою логин форму
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
                 .successHandler(successUserHandler) // подключаем наш SuccessHandler для перенеправления по ролям
                 .and().logout()
                 .logoutUrl("/logout") //URL-адрес, запускающий выход из системы (по умолчанию "/ logout").
@@ -50,4 +56,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(8);
     }
+
+    @Bean
+    public OAuth20Service oAuth20Service() {
+        return new ServiceBuilder("877276455442-71mig1jr5kner68lq0nl8sl0aocsg0b5.apps.googleusercontent.com")
+                .apiSecret("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")
+                .defaultScope("https://www.googleapis.com/auth/userinfo.email")
+                .callback("http://localhost:8080/auth")
+                .build(GoogleApi20.instance());
+    }
+
 }
