@@ -1,5 +1,6 @@
 package com.javamentor.springbootstrap.service;
 
+import com.javamentor.springbootstrap.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,8 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.javamentor.springbootstrap.dao.UserDao;
-import com.javamentor.springbootstrap.model.Role;
-import com.javamentor.springbootstrap.model.User;
+
 import java.util.List;
 
 @Service
@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean delUser(User user) {
-        return userDao.delUser(user);
+    public boolean delUser(User User) {
+        return userDao.delUser(User);
     }
 
     @Override
@@ -36,21 +36,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addOrEditUser(User user, boolean encPass) {
-        if(encPass == true) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User getUserByName(String name) {
+        return userDao.getUserByName(name);
+    }
+
+    @Override
+    public void addOrEditUser(User User, boolean encPass) {
+        if(encPass) {
+            User.setPassword(passwordEncoder.encode(User.getPassword()));
         }
-        userDao.addOrEditUser(user);
+        userDao.addOrEditUser(User);
     }
 
     @Override
     public List<User> getUsers() {
         return userDao.getUsers();
-    }
-
-    @Override
-    public Role getRole(String roleName) {
-        return userDao.getRole(roleName);
     }
 
     @Override

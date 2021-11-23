@@ -1,15 +1,12 @@
 package com.javamentor.springbootstrap.dao;
 
+import com.javamentor.springbootstrap.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import com.javamentor.springbootstrap.model.Role;
-import com.javamentor.springbootstrap.model.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 
@@ -23,14 +20,14 @@ public class UserDaoImpl implements UserDao {
     private PasswordEncoder passEnc;
 
     @Override
-    public void addOrEditUser(User user) {
-        em.merge(user);
+    public void addOrEditUser(User User) {
+        em.merge(User);
     }
 
     @Override
-    public boolean delUser(User user) {
+    public boolean delUser(User User) {
         Query query = em.createQuery("DELETE FROM User u WHERE u.id = :id");
-        query.setParameter("id", user.getId());
+        query.setParameter("id", User.getId());
         query.executeUpdate();
         return true;
     }
@@ -42,30 +39,27 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getUsers() {
-        return em.createQuery("SELECT u from User u",User.class).getResultList();
+        return em.createQuery("SELECT u from User u", User.class).getResultList();
     }
 
     @Override
     public User getUserByName(String s) {
-        TypedQuery<User> query = em.createQuery("SELECT u from User u WHERE u.name = :name", User.class);
-        query.setParameter("name", s);
-        return query.getSingleResult();
-    }
-
-    @Override
-    public Role getRole(String roleName) {
-        TypedQuery<Role> query = em.createQuery("SELECT r from Role r WHERE r.role = :roleName", Role.class);
-        query.setParameter("roleName", roleName);
-        return query.getSingleResult();
+        try {
+            TypedQuery<User> query = em.createQuery("SELECT u from User u WHERE u.name = :name", User.class);
+            query.setParameter("name", s);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
     public void createDataTables() {
         Role userRole = new Role("ROLE_USER");
         Role adminRole = new Role("ROLE_ADMIN");
-        em.persist(new User("Tom", "Anderson", 54, passEnc.encode("12345"), new HashSet<Role>(){{add(userRole);}}));
-        em.persist(new User("Mike", "Kyk", 36, passEnc.encode("123"), new HashSet<Role>(){{add(userRole); add(adminRole);}}));
-        em.persist(new User("Ivan", "Petrov", 20, passEnc.encode("000"), new HashSet<Role>(){{add(adminRole);}}));
+        em.persist(new User("Tom", "Anderson", 54, passEnc.encode("12345"), new HashSet<>(){{add(userRole);}}));
+        em.persist(new User("Mike", "Kyk", 36, passEnc.encode("123"), new HashSet<>(){{add(userRole); add(adminRole);}}));
+        em.persist(new User("Ivan", "Petrov", 20, passEnc.encode("000"), new HashSet<>(){{add(adminRole);}}));
     }
 
 }
