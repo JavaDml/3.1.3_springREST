@@ -10,18 +10,18 @@ import com.javamentor.springbootstrap.service.UserService;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserControllerRoleUser {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserControllerRoleUser(UserService userService) {
         this.userService = userService;
     }
 
     // form 'user_panel'
     @GetMapping("/show_my_user")
-    public String GetUsers() {
-        return "/show_my_user.html";
+    public String getUsers() {
+        return "/show_my_user";
     }
 
     @ModelAttribute("User")

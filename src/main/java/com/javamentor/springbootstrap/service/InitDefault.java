@@ -1,15 +1,17 @@
 package com.javamentor.springbootstrap.service;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
 public class InitDefault {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public InitDefault(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostConstruct
     public void createDataTables() {

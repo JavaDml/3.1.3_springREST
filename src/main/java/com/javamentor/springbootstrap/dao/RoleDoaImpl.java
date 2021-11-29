@@ -6,24 +6,29 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Repository
 public class RoleDoaImpl implements RoleDao {
 
     @PersistenceContext
-    private EntityManager em;
+    private final EntityManager em;
 
-    @Override
-    public Collection<Role> getRoles() {
-        TypedQuery<Role> query = em.createQuery("SELECT r from Role r", Role.class);
-        return query.getResultList();
+    public RoleDoaImpl(EntityManager em) {
+        this.em = em;
     }
 
     @Override
-    public Collection<Role> getRoles(String roleName) {
+    public Set<Role> getRoles() {
+        TypedQuery<Role> query = em.createQuery("SELECT r from Role r", Role.class);
+        return new HashSet<>(query.getResultList());
+    }
+
+    @Override
+    public Set<Role> getRoles(String roleName) {
         TypedQuery<Role> query = em.createQuery("SELECT r from Role r WHERE r.role = :roleName", Role.class);
         query.setParameter("roleName", roleName);
-        return query.getResultList();
+        return new HashSet<>(query.getResultList());
     }
 }

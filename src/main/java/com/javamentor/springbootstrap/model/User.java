@@ -9,8 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table( name = "user")
+@Table( name = "users")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +24,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
 
     public User() {}
@@ -72,11 +73,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 

@@ -3,26 +3,31 @@ package com.javamentor.springbootstrap.service;
 
 import com.javamentor.springbootstrap.dao.RoleDao;
 import com.javamentor.springbootstrap.model.Role;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
+import java.util.Set;
 
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
 
-    @Autowired
     RoleDao roleDao;
 
+    public RoleServiceImpl(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
+
+
+
+    @Transactional(readOnly = true)
     @Override
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roleDao.getRoles();
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Collection<Role> getRoles(String roleName) {
+    public Set<Role> getRoles(String roleName) {
         return roleDao.getRoles(roleName);
     }
 }

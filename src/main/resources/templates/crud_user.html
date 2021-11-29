@@ -19,10 +19,10 @@
     <div class="container-fluid">
         <div class="navbar-brand">
             <strong>
-                <td th:text="${CurrentUser.getName()}"></td>
+                <td th:text="${CurrentUser}"></td>
             </strong>
             with roles:
-            <td th:text="${CurrentUser.getRolesToString()}"></td>
+            <td th:text="${CurrentRoles}"></td>
         </div>
 
         <a class="navbar-text" th:href="@{/logout}">Logout</a>

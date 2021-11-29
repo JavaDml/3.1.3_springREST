@@ -1,23 +1,25 @@
 package com.javamentor.springbootstrap.dao;
 
 import com.javamentor.springbootstrap.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import com.javamentor.springbootstrap.model.Role;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
-    private EntityManager em;
+    private final EntityManager em;
+    private final PasswordEncoder passEnc;
 
-    @Autowired
-    private PasswordEncoder passEnc;
+    public UserDaoImpl(EntityManager em, PasswordEncoder passEnc) {
+        this.em = em;
+        this.passEnc = passEnc;
+    }
 
     @Override
     public void addOrEditUser(User User) {
@@ -57,9 +59,9 @@ public class UserDaoImpl implements UserDao {
     public void createDataTables() {
         Role userRole = new Role("ROLE_USER");
         Role adminRole = new Role("ROLE_ADMIN");
-        em.persist(new User("Tom", "Anderson", 54, passEnc.encode("12345"), new HashSet<>(){{add(userRole);}}));
-        em.persist(new User("Mike", "Kyk", 36, passEnc.encode("123"), new HashSet<>(){{add(userRole); add(adminRole);}}));
-        em.persist(new User("Ivan", "Petrov", 20, passEnc.encode("000"), new HashSet<>(){{add(adminRole);}}));
+        em.persist(new User("Tom", "Anderson", 54, passEnc.encode("12345"), Set.of(userRole)));
+        em.persist(new User("Mike", "Kyk", 36, passEnc.encode("123"), Set.of(userRole, adminRole)));
+        em.persist(new User("Ivan", "Petrov", 20, passEnc.encode("000"), Set.of(adminRole)));
     }
 
 }

@@ -2,9 +2,9 @@ package com.javamentor.springbootstrap.dao;
 
 import com.javamentor.springbootstrap.model.Role;
 
-import java.util.Collection;
+import java.util.Set;
 
 public interface RoleDao {
-    Collection<Role> getRoles();
-    Collection<Role> getRoles(String roleName);
+    Set<Role> getRoles();
+    Set<Role> getRoles(String roleName);
 }
